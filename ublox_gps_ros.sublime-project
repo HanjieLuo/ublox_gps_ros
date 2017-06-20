@@ -1,0 +1,28 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		},
+		{
+			"path": "/home/luohanjie/Documents/SLAM/Code/catkin_ws_SaveMap/src/iai_kinect2"
+		},
+		{
+			"path": "/home/luohanjie/Documents/SLAM/Code/catkin_ws_SaveMap/src/zed_cpu_ros"
+		},
+		{
+			"path": "/home/luohanjie/Documents/SLAM/Code/catkin_ws_SaveMap/src/orb_slam2_zed"
+		}
+	],
+	"settings":
+	{
+		"easy_clang_complete_verbose": true,
+		"ecc_common_flags":
+		[
+			"-I$project_base_path/include",
+			"-I$project_base_path/../../devel/include",
+			"-I/usr/include",
+			"-I/opt/ros/indigo/include"
+		]
+	}
+}

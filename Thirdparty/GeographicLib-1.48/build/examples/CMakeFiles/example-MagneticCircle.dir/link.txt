@@ -1,0 +1,1 @@
+/usr/bin/c++    -Wall -Wextra -std=c++14 -O3 -DNDEBUG    CMakeFiles/example-MagneticCircle.dir/example-MagneticCircle.cpp.o  -o example-MagneticCircle -rdynamic ../src/libGeographic.so.17.1.1 -Wl,-rpath,/home/luohanjie/Documents/SLAM/Code/catkin_ws_SaveMap/src/ublox_gps_ros/Thirdparty/GeographicLib-1.48/build/src 

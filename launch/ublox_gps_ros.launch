@@ -1,0 +1,20 @@
+<launch>
+<arg name="gps_namespace" default="GPS"/>
+<arg name="port" default="/dev/ttyACM0"/>
+<arg name="baudrate" default="115200"/>
+
+
+<arg name="output_data_file" default="/home/luohanjie/Documents/SLAM/Data/gps/data.csv"/>
+<arg name="show_2d_map" default="true"/>
+<arg name="show_google_map" default="false"/>
+
+<node pkg="ublox_gps_ros" type="ublox_gps_ros_node" name="ublox_gps_ros_node" output="screen" ns="$(arg gps_namespace)" required="true">
+	<param name="port" value="$(arg port)"/>
+	<param name="baudrate" value="$(arg baudrate)"/>
+
+    <param name="output_data_file" value="$(arg output_data_file)"/>
+    <param name="show_2d_map" value="$(arg show_2d_map)"/>
+    <param name="show_google_map" value="$(arg show_google_map)"/>
+</node>
+
+</launch>
