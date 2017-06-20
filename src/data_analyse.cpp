@@ -50,30 +50,36 @@ bool DataAnalyse::ReadFile(const char *file, int col, int index, int &row, vecto
 void DataAnalyse::ShowMap(vector<double*> &data) {
     int img_x, img_y;
     double x, y, head_motion, ground_speed, t;
-    cv::Mat img_map(1000, 1000, CV_8UC3, cv::Scalar(255, 255, 255));
+    cv::Mat img_map(1600, 1600, CV_8UC3, cv::Scalar(255, 255, 255));
     cv::Mat img_show;
     for(vector<double*>::iterator iter=data.begin(); iter!=data.end(); ++iter) {
-        x = (*iter)[4];
-        y = (*iter)[5];
+        // x = (*iter)[4];
+        // y = (*iter)[5];
+        x = (*iter)[5];
+        y = (*iter)[6];
         head_motion = (*iter)[11];
         ground_speed = (*iter)[12];
         t = (*iter)[0];
-        ground_speed = (*iter)[12];
+        // ground_speed = (*iter)[12];
         cout<<"stamp: "<<static_cast<long>(t)<<endl;
         cout<<"x: "<<x<<endl;
         cout<<"y: "<<y<<endl;
         cout<<"head_motion: "<<head_motion<<endl;
         cout<<"ground_speed: "<<ground_speed<<endl<<endl;;
 
-        img_x = (int)(roundf(x * 10) + 500);
-        img_y = (int)(- roundf(y * 10) + 500);
+        img_x = (int)(roundf(x * 10) + 800);
+        img_y = (int)(- roundf(y * 10) + 800);
 
-        head_motion = (90 - head_motion);
-        head_motion = fmod(head_motion + 180, 360);
-        if (head_motion < 0)
-            head_motion += 360;
-        head_motion -= 180;
-        head_motion = head_motion * M_PI / 180;
+        // head_motion = (90 - head_motion);
+        // head_motion = fmod(head_motion + 180, 360);
+        // if (head_motion < 0)
+        //     head_motion += 360;
+        // head_motion -= 180;
+        // head_motion = head_motion * M_PI / 180;
+
+        // head_motion = fmod(270 - head_motion, 360);
+        // if (head_motion < 0) head_motion += 360;
+        // head_motion = (head_motion - 180) * 0.01745329251;
 
         int dir_x, dir_y, r;
         r = roundf(ground_speed * 100);
@@ -95,8 +101,10 @@ void DataAnalyse::ShowMap(vector<double*> &data) {
         // cout<<head_motion<<endl<<endl;
         // cout<<roundf(ground_speed * 10)<<endl;
 
+        cv::resize(img_show, img_show, cv::Size(), 0.5, 0.5);
+
         cv::imshow("2D MAP", img_show);
-        cv::waitKey(50);
+        cv::waitKey(10);
     }
 }
 

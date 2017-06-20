@@ -5,7 +5,7 @@
 
 
 <arg name="output_data_file" default="/home/luohanjie/Documents/SLAM/Data/gps/data.csv"/>
-<arg name="show_2d_map" default="true"/>
+<arg name="show_2d_map" default="false"/>
 <arg name="show_google_map" default="false"/>
 
 <node pkg="ublox_gps_ros" type="ublox_gps_ros_node" name="ublox_gps_ros_node" output="screen" ns="$(arg gps_namespace)" required="true">

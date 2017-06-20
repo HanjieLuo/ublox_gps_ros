@@ -236,9 +236,16 @@ void GPS::ProcessData() {
 		  	fix_type_ = pvt_data_.fixType;
 
 
+		  	// head_motion = (90 - head_motion);
+	        // head_motion = fmod(head_motion + 180, 360);
+	        // if (head_motion < 0)
+	        //     head_motion += 360;
+	        // head_motion -= 180;
+	        // head_motion = head_motion * M_PI / 180;
+
 	        head_motion_ = fmod(270 - head_motion_, 360);
-	        if (head_motion_ < 0) head_motion_ += 360;
-	        head_motion_ = (head_motion_ - 180) * 1.137922073;
+	        if (head_motion_ < 0) head_motion_ += 180;
+	        head_motion_ = (head_motion_ - 180) * 0.01745329251;
 
 			y_ = relposned_data_.relPosN + relposned_data_.relPosHPN;
 			x_ = relposned_data_.relPosE + relposned_data_.relPosHPE;
@@ -321,8 +328,8 @@ void GPS::getParams() {
 
 	private_nh.param("show_2d_map", show_2d_map_, false);
 	if (show_2d_map_) {
-		img_map_ = new cv::Mat(1000, 1000, CV_8UC3, cv::Scalar(255, 255, 255));
-		cv::circle(*img_map_, cv::Point(500 , 500), 1, cv::Scalar(255, 0, 255), -1);
+		img_map_ = new cv::Mat(1600, 1600, CV_8UC3, cv::Scalar(255, 255, 255));
+		cv::circle(*img_map_, cv::Point(800 , 800), 1, cv::Scalar(255, 0, 255), -1);
 	}
 
 	private_nh.param("show_google_map", show_google_map_, false);
@@ -432,8 +439,8 @@ void GPS::ShowGoogleMap(const double lat, const double lon) {
 void GPS::Show2dMap(const double x, const double y, const double dir, const double v) {
 	// std::cout<<"y: "<<y<<std::endl;
 	// std::cout<<"x: "<<x<<std::endl;
-	int img_x = (int)(roundf(x * 10) + 500);
-	int img_y = (int)(- roundf(y * 10) + 500);
+	int img_x = (int)(roundf(x * 10) + 800);
+	int img_y = (int)(- roundf(y * 10) + 800);
 	// std::cout<<"img_y: "<<img_y<<std::endl;
 	// std::cout<<"img_x: "<<img_x<<std::endl<<std::endl;
 	// img_map_->at<cv::Vec3b>(img_y, img_x)[0] = 0;
