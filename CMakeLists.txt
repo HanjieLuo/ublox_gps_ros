@@ -79,12 +79,13 @@ add_executable(subscriber src/subscriber.cpp)
 add_dependencies(subscriber ${catkin_EXPORTED_TARGETS})
 target_link_libraries(subscriber ${LINK_LIBRARIES})
 
-add_executable(data_analyse src/data_analyse.cpp)
-target_link_libraries(data_analyse ${LINK_LIBRARIES})
-
 add_library(gps SHARED src/gps.cpp)
 add_dependencies(gps ${catkin_EXPORTED_TARGETS})
 target_link_libraries(gps ${LINK_LIBRARIES})
+
+add_executable(data_analyse src/data_analyse.cpp)
+add_dependencies(data_analyse ${catkin_EXPORTED_TARGETS})
+target_link_libraries(data_analyse gps ${LINK_LIBRARIES})
 
 add_executable(ublox_gps_ros_node src/ublox_gps_ros_node.cpp)
 target_link_libraries(ublox_gps_ros_node gps ${LINK_LIBRARIES})

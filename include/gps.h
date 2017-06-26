@@ -144,6 +144,7 @@ public:
 	~GPS();
 	void Run();
 	bool OpenDevice();
+    static void ArrowedLine(cv::Mat &img, cv::Point pt1, cv::Point pt2, const cv::Scalar& color, int thickness=1, int line_type=8, int shift=0, double tipLength=0.1);
 private:
 	std::string port_;
 	int baud_rate_;
@@ -215,8 +216,6 @@ private:
     static int WriteData(char *ptr, int size, int nmemb, void *user_data);
     void ShowGoogleMap(const double lat, const double lon);
     void Show2dMap(const double x, const double y, const double dir, const double v);
-
-    void ArrowedLine(cv::Mat &img, cv::Point pt1, cv::Point pt2, const cv::Scalar& color, int thickness=1, int line_type=8, int shift=0, double tipLength=0.1);
 
     void Publish();
 

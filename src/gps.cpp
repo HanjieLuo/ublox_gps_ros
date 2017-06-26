@@ -453,7 +453,7 @@ void GPS::Show2dMap(const double x, const double y, const double dir, const doub
 
     cv::Mat img_show = img_map_->clone();
 
-    ArrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
+    GPS::ArrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
 
 	cv::imshow("2D MAP", img_show);
 	cv::waitKey(1);

@@ -93,10 +93,9 @@ void DataAnalyse::ShowMap(vector<double*> &data) {
 
         img_show = img_map.clone();
 
-        cv::arrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
+        // GPS::ArrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
 
-
-
+        GPS::ArrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
 
         // cout<<head_motion<<endl<<endl;
         // cout<<roundf(ground_speed * 10)<<endl;

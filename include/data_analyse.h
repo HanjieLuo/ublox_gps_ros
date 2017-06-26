@@ -11,6 +11,7 @@
 #include <ros/ros.h>
 #include <opencv2/opencv.hpp>
 #include <math.h>
+#include "gps.h"
 
 using namespace std;
 
