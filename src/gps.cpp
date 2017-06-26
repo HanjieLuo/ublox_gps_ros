@@ -453,7 +453,7 @@ void GPS::Show2dMap(const double x, const double y, const double dir, const doub
 
     cv::Mat img_show = img_map_->clone();
 
-    cv::arrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
+    ArrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
 
 	cv::imshow("2D MAP", img_show);
 	cv::waitKey(1);
@@ -651,4 +651,21 @@ void GPS::PrintUbxNavRelPosNED(UbxNavRelPosNED &data) {
 	std::cout<<std::right<<std::setw(15)<<"accD: "          <<std::left<<std::setw(25)<<data.accD                            <<std::left<<std::setw(10)<<"m"<<std::endl;
 	std::cout<<std::right<<std::setw(15)<<"flags: "         <<std::left<<std::setw(35)<<std::bitset<32>(data.flags)          <<std::left<<std::setw(10)<<"-"<<std::endl;
 	std::cout<<"========================================="<<std::endl;
+}
+
+
+void GPS::ArrowedLine(cv::Mat &img, cv::Point pt1, cv::Point pt2, const cv::Scalar& color, int thickness, int line_type, int shift, double tipLength) {
+	const double tipSize = norm(pt1-pt2)*tipLength; // Factor to normalize the size of the tip depending on the length of the arrow
+
+    cv::line(img, pt1, pt2, color, thickness, line_type, shift);
+
+    const double angle = atan2( (double) pt1.y - pt2.y, (double) pt1.x - pt2.x );
+
+    cv::Point p(cvRound(pt2.x + tipSize * cos(angle + CV_PI / 4)),
+        cvRound(pt2.y + tipSize * sin(angle + CV_PI / 4)));
+    line(img, p, pt2, color, thickness, line_type, shift);
+
+    p.x = cvRound(pt2.x + tipSize * cos(angle - CV_PI / 4));
+    p.y = cvRound(pt2.y + tipSize * sin(angle - CV_PI / 4));
+    line(img, p, pt2, color, thickness, line_type, shift);
 }
