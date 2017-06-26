@@ -1,8 +1,7 @@
-
 #include <ros/ros.h>
-#include "ublox_gps_ros/gps_msg.h"
+#include "gps_msgs/gps_msg.h"
 
-void checkGPSCallback(const ublox_gps_ros::gps_msg::ConstPtr& msg)
+void checkGPSCallback(const gps_msgs::gps_msg::ConstPtr & msg)
 {
   ROS_INFO("========================");
   ROS_INFO("Stamp: %d", msg->stamp);

@@ -18,7 +18,7 @@ GPS::GPS(void) {
 	getParams();
 	OpenDevice();
 
-	gps_pub_ = nh_.advertise<ublox_gps_ros::gps_msg>("/gps/data", 100);
+	gps_pub_ = nh_.advertise<gps_msgs::gps_msg>("/gps/data", 100);
 	
 }
 
@@ -243,9 +243,9 @@ void GPS::ProcessData() {
 	        // head_motion -= 180;
 	        // head_motion = head_motion * M_PI / 180;
 
-	        head_motion_ = fmod(270 - head_motion_, 360);
-	        if (head_motion_ < 0) head_motion_ += 180;
-	        head_motion_ = (head_motion_ - 180) * 0.01745329251;
+	        head_motion_ = 90 - head_motion_;
+		    if (head_motion_ < -180) head_motion_ += 360;
+		    head_motion_ *= 0.01745329251;
 
 			y_ = relposned_data_.relPosN + relposned_data_.relPosHPN;
 			x_ = relposned_data_.relPosE + relposned_data_.relPosHPE;
@@ -283,7 +283,7 @@ void GPS::ProcessData() {
 
 void GPS::Publish() {
 	if (ros::ok()) {
-		ublox_gps_ros::gps_msg msg;
+		gps_msgs::gps_msg msg;
 		msg.header.stamp = ros::Time::now();
 		msg.header.frame_id = "gps";
 		msg.stamp = stamp_;

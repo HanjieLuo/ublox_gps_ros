@@ -24,7 +24,7 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 
-#include "ublox_gps_ros/gps_msg.h"
+#include "gps_msgs/gps_msg.h"
 
 //remap in 2d map
 // #include <GeographicLib/Geocentric.hpp>

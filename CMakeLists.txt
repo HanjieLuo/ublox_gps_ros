@@ -33,21 +33,24 @@ find_package(CURL REQUIRED)
 
 find_package (GeographicLib REQUIRED)
 
-
 find_package(catkin REQUIRED
   COMPONENTS
   cmake_modules
   roscpp
   std_msgs
+  gps_msgs
   message_generation
   )
 
-include_directories(
-  "include"
-  ${CURL_INCLUDE_DIR}
-  ${catkin_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
-  ${GeographicLib_INCLUDE_DIRS}
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  gps_msgs
+)
+
+catkin_package(
+  # LIBRARIES
+  CATKIN_DEPENDS message_runtime std_msgs gps_msgs
   )
 
 add_definitions (${GeographicLib_DEFINITIONS})
@@ -61,32 +64,32 @@ set(LINK_LIBRARIES
   ${GeographicLib_LIBRARIES}
   )
 
-add_message_files(
-  FILES
-  gps_msg.msg
-)
 
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
 
-catkin_package(
-  # LIBRARIES
-  CATKIN_DEPENDS message_runtime
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  "include"
+  ${CURL_INCLUDE_DIR}
+  ${OpenCV_INCLUDE_DIRS}
+  ${GeographicLib_INCLUDE_DIRS}
   )
 
 
 add_executable(subscriber src/subscriber.cpp)
+add_dependencies(subscriber ${catkin_EXPORTED_TARGETS})
 target_link_libraries(subscriber ${LINK_LIBRARIES})
 
 add_executable(data_analyse src/data_analyse.cpp)
 target_link_libraries(data_analyse ${LINK_LIBRARIES})
 
 add_library(gps SHARED src/gps.cpp)
+add_dependencies(gps ${catkin_EXPORTED_TARGETS})
 target_link_libraries(gps ${LINK_LIBRARIES})
 
 add_executable(ublox_gps_ros_node src/ublox_gps_ros_node.cpp)
 target_link_libraries(ublox_gps_ros_node gps ${LINK_LIBRARIES})
+
+
+
 
 

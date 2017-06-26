@@ -53,10 +53,10 @@ void DataAnalyse::ShowMap(vector<double*> &data) {
     cv::Mat img_map(1600, 1600, CV_8UC3, cv::Scalar(255, 255, 255));
     cv::Mat img_show;
     for(vector<double*>::iterator iter=data.begin(); iter!=data.end(); ++iter) {
-        // x = (*iter)[4];
-        // y = (*iter)[5];
-        x = (*iter)[5];
-        y = (*iter)[6];
+        x = (*iter)[4];
+        y = (*iter)[5];
+        // x = (*iter)[5];
+        // y = (*iter)[6];
         head_motion = (*iter)[11];
         ground_speed = (*iter)[12];
         t = (*iter)[0];
@@ -77,9 +77,9 @@ void DataAnalyse::ShowMap(vector<double*> &data) {
         // head_motion -= 180;
         // head_motion = head_motion * M_PI / 180;
 
-        // head_motion = fmod(270 - head_motion, 360);
-        // if (head_motion < 0) head_motion += 360;
-        // head_motion = (head_motion - 180) * 0.01745329251;
+        head_motion = 90 - head_motion;
+        if (head_motion < -180) head_motion += 360;
+        head_motion *= 0.01745329251;
 
         int dir_x, dir_y, r;
         r = roundf(ground_speed * 100);
