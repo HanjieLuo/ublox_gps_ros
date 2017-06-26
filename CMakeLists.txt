@@ -31,7 +31,7 @@ endif(OpenCV_FOUND)
 
 find_package(CURL REQUIRED)
 
-find_package (GeographicLib REQUIRED)
+# find_package (GeographicLib REQUIRED)
 
 find_package(catkin REQUIRED
   COMPONENTS
@@ -53,7 +53,7 @@ catkin_package(
   CATKIN_DEPENDS message_runtime std_msgs gps_msgs
   )
 
-add_definitions (${GeographicLib_DEFINITIONS})
+# add_definitions (${GeographicLib_DEFINITIONS})
 
 link_directories(${catkin_LIBRARY_DIRS})
 
@@ -61,7 +61,7 @@ set(LINK_LIBRARIES
   ${CURL_LIBRARY}
   ${OpenCV_LIBS}
   ${catkin_LIBRARIES}
-  ${GeographicLib_LIBRARIES}
+  # ${GeographicLib_LIBRARIES}
   )
 
 
@@ -71,7 +71,7 @@ include_directories(
   "include"
   ${CURL_INCLUDE_DIR}
   ${OpenCV_INCLUDE_DIRS}
-  ${GeographicLib_INCLUDE_DIRS}
+  # ${GeographicLib_INCLUDE_DIRS}
   )
 
 
