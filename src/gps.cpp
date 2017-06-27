@@ -219,21 +219,23 @@ void GPS::ProcessData() {
 		// std::cout <<std::setprecision(10)<< pvt_data_.lat << " " << pvt_data_.lon << " " << pvt_data_.height << "\n";
 		// std::cout <<std::setprecision(3)<< x << " " << y << " " << z << "\n" << "\n";
 		// ShowMap(pvt_data_);
-		// PrintUbxNavPvt(pvt_data_);
+		if (show_gps_data_) {
+			PrintUbxNavPvt(pvt_data_);
+		}
 	} else if (msg_class_ == 0x01 && msg_id_ == 0x3c && payload_length_ == 40) {
 		ParseUbxNavRelPosNED(payload_, relposned_data_);
 
 		if (stamp_ == relposned_data_.iTOW) {
 			lat_ = pvt_data_.lat;
-		  	lon_ = pvt_data_.lon;
-		  	height_ = pvt_data_.height;
-		  	vel_x_ = pvt_data_.velN;
-		  	vel_y_ = pvt_data_.velE;
-		  	vel_z_ = pvt_data_.velD;
-		  	ground_speed_ = pvt_data_.gSpeed;
-		  	head_motion_ = pvt_data_.headMot;
+			lon_ = pvt_data_.lon;
+			height_ = pvt_data_.height;
+			vel_x_ = pvt_data_.velN;
+			vel_y_ = pvt_data_.velE;
+			vel_z_ = pvt_data_.velD;
+			ground_speed_ = pvt_data_.gSpeed;
+			head_motion_ = pvt_data_.headMot;
 		  	// head_vehicle_ = pvt_data_.headVeh;
-		  	fix_type_ = pvt_data_.fixType;
+			fix_type_ = pvt_data_.fixType;
 
 
 		  	// head_motion = (90 - head_motion);
@@ -243,9 +245,9 @@ void GPS::ProcessData() {
 	        // head_motion -= 180;
 	        // head_motion = head_motion * M_PI / 180;
 
-	        head_motion_ = 90 - head_motion_;
-		    if (head_motion_ < -180) head_motion_ += 360;
-		    head_motion_ *= 0.01745329251;
+			head_motion_ = 90 - head_motion_;
+			if (head_motion_ < -180) head_motion_ += 360;
+			head_motion_ *= 0.01745329251;
 
 			y_ = relposned_data_.relPosN + relposned_data_.relPosHPN;
 			x_ = relposned_data_.relPosE + relposned_data_.relPosHPE;
@@ -255,10 +257,10 @@ void GPS::ProcessData() {
 
 			if(!output_data_file_.empty()) {
 				out_<<stamp_<<","<<fix_type_<<","<<std::fixed<<std::setprecision(32)
-					<<lat_<<","<<lon_<<","<<height_<<","
-					<<x_<<","<<y_<<","<<z_<<","
-					<<vel_x_<<","<<vel_y_<<","<<vel_z_<<","   
-					<<","<<head_motion_<<","<<ground_speed_<<std::endl;
+				<<lat_<<","<<lon_<<","<<height_<<","
+				<<x_<<","<<y_<<","<<z_<<","
+				<<vel_x_<<","<<vel_y_<<","<<vel_z_<<","   
+				<<","<<head_motion_<<","<<ground_speed_<<std::endl;
 			}
 
 			if (show_google_map_) {
@@ -267,6 +269,10 @@ void GPS::ProcessData() {
 
 			if (show_2d_map_) {
 				Show2dMap(x_, y_, head_motion_, ground_speed_);
+			}
+
+			if (show_gps_data_) {		
+				PrintUbxNavRelPosNED(relposned_data_);
 			}
 		}
 		// } else {
@@ -277,7 +283,6 @@ void GPS::ProcessData() {
 
 		// }
 		// std::cout<<"UbxNavRelPosNED: "<<std::setprecision(10)<<relposned_data_.iTOW<<std::endl;
-		// PrintUbxNavRelPosNED(relposned_data_);
 	}
 }
 
@@ -328,11 +333,13 @@ void GPS::getParams() {
 
 	private_nh.param("show_2d_map", show_2d_map_, false);
 	if (show_2d_map_) {
-		img_map_ = new cv::Mat(1600, 1600, CV_8UC3, cv::Scalar(255, 255, 255));
-		cv::circle(*img_map_, cv::Point(800 , 800), 1, cv::Scalar(255, 0, 255), -1);
+		img_map_ = new cv::Mat(2000, 2000, CV_8UC3, cv::Scalar(255, 255, 255));
+		cv::circle(*img_map_, cv::Point(1000 , 1000), 10, cv::Scalar(255, 0, 255), -1);
 	}
 
 	private_nh.param("show_google_map", show_google_map_, false);
+
+	private_nh.param("show_gps_data", show_gps_data_, false);
 }
 
 bool GPS::OpenDevice() {
@@ -437,23 +444,24 @@ void GPS::ShowGoogleMap(const double lat, const double lon) {
 }
 
 void GPS::Show2dMap(const double x, const double y, const double dir, const double v) {
-	// std::cout<<"y: "<<y<<std::endl;
-	// std::cout<<"x: "<<x<<std::endl;
-	int img_x = (int)(roundf(x * 10) + 800);
-	int img_y = (int)(- roundf(y * 10) + 800);
-	// std::cout<<"img_y: "<<img_y<<std::endl;
-	// std::cout<<"img_x: "<<img_x<<std::endl<<std::endl;
+	//std::cout<<"y: "<<y<<std::endl;
+	//std::cout<<"x: "<<x<<std::endl;
+	int img_x = (int)(roundf(x * 10) + 1000);
+	int img_y = (int)(- roundf(y * 10) + 1000);
+	//std::cout<<"img_y: "<<img_y<<std::endl;
+	//std::cout<<"img_x: "<<img_x<<std::endl<<std::endl;
 	// img_map_->at<cv::Vec3b>(img_y, img_x)[0] = 0;
 
-    int r = roundf(v * 100);
-    int dir_x = r * cos(dir);
-    int dir_y = r * sin(dir);
+	int r = roundf(v * 100);
+	int dir_x = r * cos(dir);
+	int dir_y = r * sin(dir);
 
 	cv::circle(*img_map_, cv::Point(img_x, img_y), 1, cv::Scalar(0, 0, 0), -1);
 
-    cv::Mat img_show = img_map_->clone();
+	cv::Mat img_show = img_map_->clone();
 
-    GPS::ArrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
+	GPS::ArrowedLine(img_show, cv::Point(img_x, img_y), cv::Point(img_x + dir_x, img_y - dir_y), CV_RGB(255, 0, 255));
+	cv::resize(img_show, img_show, cv::Size(), 0.5, 0.5);
 
 	cv::imshow("2D MAP", img_show);
 	cv::waitKey(1);
@@ -657,15 +665,15 @@ void GPS::PrintUbxNavRelPosNED(UbxNavRelPosNED &data) {
 void GPS::ArrowedLine(cv::Mat &img, cv::Point pt1, cv::Point pt2, const cv::Scalar& color, int thickness, int line_type, int shift, double tipLength) {
 	const double tipSize = norm(pt1-pt2)*tipLength; // Factor to normalize the size of the tip depending on the length of the arrow
 
-    cv::line(img, pt1, pt2, color, thickness, line_type, shift);
+	cv::line(img, pt1, pt2, color, thickness, line_type, shift);
 
-    const double angle = atan2( (double) pt1.y - pt2.y, (double) pt1.x - pt2.x );
+	const double angle = atan2( (double) pt1.y - pt2.y, (double) pt1.x - pt2.x );
 
-    cv::Point p(cvRound(pt2.x + tipSize * cos(angle + CV_PI / 4)),
-        cvRound(pt2.y + tipSize * sin(angle + CV_PI / 4)));
-    line(img, p, pt2, color, thickness, line_type, shift);
+	cv::Point p(cvRound(pt2.x + tipSize * cos(angle + CV_PI / 4)),
+		cvRound(pt2.y + tipSize * sin(angle + CV_PI / 4)));
+	line(img, p, pt2, color, thickness, line_type, shift);
 
-    p.x = cvRound(pt2.x + tipSize * cos(angle - CV_PI / 4));
-    p.y = cvRound(pt2.y + tipSize * sin(angle - CV_PI / 4));
-    line(img, p, pt2, color, thickness, line_type, shift);
+	p.x = cvRound(pt2.x + tipSize * cos(angle - CV_PI / 4));
+	p.y = cvRound(pt2.y + tipSize * sin(angle - CV_PI / 4));
+	line(img, p, pt2, color, thickness, line_type, shift);
 }

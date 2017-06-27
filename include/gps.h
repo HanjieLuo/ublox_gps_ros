@@ -144,7 +144,7 @@ public:
 	~GPS();
 	void Run();
 	bool OpenDevice();
-    static void ArrowedLine(cv::Mat &img, cv::Point pt1, cv::Point pt2, const cv::Scalar& color, int thickness=1, int line_type=8, int shift=0, double tipLength=0.1);
+    static void ArrowedLine(cv::Mat &img, cv::Point pt1, cv::Point pt2, const cv::Scalar& color, int thickness=2, int line_type=8, int shift=0, double tipLength=0.1);
 private:
 	std::string port_;
 	int baud_rate_;
@@ -188,6 +188,7 @@ private:
 
     bool show_2d_map_;
     bool show_google_map_;
+    bool show_gps_data_;
     cv::Mat* img_map_;
 
     ros::NodeHandle nh_;

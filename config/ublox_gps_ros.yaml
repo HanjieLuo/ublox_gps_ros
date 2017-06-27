@@ -1,5 +1,6 @@
 port: '/dev/ttyACM0'
 baudrate: '115200'
-# output_data_file: '/home/luohanjie/Documents/SLAM/Data/gps/data.csv'
-show_2d_map: false
+#output_data_file: '/home/droid/Documents/gps_data/gps_data.csv'
+show_2d_map: true
 show_google_map: false
+show_gps_data: false
