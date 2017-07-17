@@ -1,6 +1,6 @@
 <launch>
 <node pkg="ublox_gps_ros" type="ublox_gps_ros_node" name="ublox_gps_ros_node" output="screen" ns="GPS" required="true">
-	<rosparam command="load" file="$(find ublox_gps_ros)/config/ublox_gps_ros.yaml"/>
+    <rosparam command="load" file="$(find ublox_gps_ros)/config/ublox_gps_ros.yaml"/>
 </node>
 
 </launch>

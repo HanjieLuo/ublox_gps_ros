@@ -75,9 +75,9 @@ include_directories(
   )
 
 
-add_executable(subscriber src/subscriber.cpp)
-add_dependencies(subscriber ${catkin_EXPORTED_TARGETS})
-target_link_libraries(subscriber ${LINK_LIBRARIES})
+add_executable(gps_subscriber src/subscriber.cpp)
+add_dependencies(gps_subscriber ${catkin_EXPORTED_TARGETS})
+target_link_libraries(gps_subscriber ${LINK_LIBRARIES})
 
 add_library(gps SHARED src/gps.cpp)
 add_dependencies(gps ${catkin_EXPORTED_TARGETS})

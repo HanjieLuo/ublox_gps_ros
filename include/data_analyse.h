@@ -20,8 +20,9 @@ public:
     DataAnalyse();
     ~DataAnalyse();
 
-    static bool ReadFile(const char *file, int col, int index, int &row, vector<double*> &data);
+    static bool ReadFile(const char *file, int index, int &row, vector<double*> &data);
     static void ShowMap(vector<double*> &data);
+    static void ShowTrace(vector<double*> &data);
 private:
 
 };
