@@ -4,3 +4,8 @@ baudrate: 115200
 show_2d_map: false
 show_google_map: false
 show_gps_data: false
+align:
+  theta: -0.0360061882444
+  scalar: -1.00857731524
+  px: 90.4098510742
+  py: -13.5929136276

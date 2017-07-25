@@ -194,6 +194,12 @@ private:
     ros::NodeHandle nh_;
     ros::Publisher gps_pub_;
 
+    bool is_align_;
+    double sin_s_;
+    double cos_s_;
+    double px_;
+    double py_;
+
     // GeographicLib::LocalCartesian *proj_;
 
     void getParams();

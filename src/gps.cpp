@@ -15,6 +15,8 @@ GPS::GPS(void) {
 	device_ = -1;
 	img_map_ = NULL;
 
+	is_align_ = false;
+
 	getParams();
 	OpenDevice();
 
@@ -306,6 +308,11 @@ void GPS::Publish() {
 		// msg.head_vehicle = head_vehicle_;
 		msg.fix_type = fix_type_;
 
+		if (is_align_) {
+			msg.x_align = cos_s_ * x_ - sin_s_ * y_ + px_;
+			msg.y_align = sin_s_ * x_ + cos_s_ * y_ + py_;
+		}
+
 		gps_pub_.publish(msg);
 		// std::cout<<stamp_<<std::endl;
 		// ROS_INFO("Publish %f", stamp_);
@@ -340,6 +347,19 @@ void GPS::getParams() {
 	private_nh.param("show_google_map", show_google_map_, false);
 
 	private_nh.param("show_gps_data", show_gps_data_, false);
+
+  	double theta, scalar;
+  	private_nh.param("align/theta", theta, 0.0);
+  	private_nh.param("align/scalar", scalar, 0.0);
+  	private_nh.param("align/px", px_, 0.0);
+  	private_nh.param("align/py", py_, 0.0);
+
+  	if (scalar != 0.0) {
+  		is_align_ = true;
+  		sin_s_ = sin(theta) * scalar;
+  		cos_s_ = cos(theta) * scalar;
+  	}
+
 }
 
 bool GPS::OpenDevice() {
