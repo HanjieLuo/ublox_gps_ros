@@ -311,6 +311,9 @@ void GPS::Publish() {
 		if (is_align_) {
 			msg.x_align = cos_s_ * x_ - sin_s_ * y_ + px_;
 			msg.y_align = sin_s_ * x_ + cos_s_ * y_ + py_;
+		} else {
+			msg.x_align = x_;
+			msg.y_align = y_;
 		}
 
 		gps_pub_.publish(msg);
