@@ -238,6 +238,7 @@ void GPS::ProcessData() {
 			head_motion_ = pvt_data_.headMot;
 		  	// head_vehicle_ = pvt_data_.headVeh;
 			fix_type_ = pvt_data_.fixType;
+			acc_2d_ = pvt_data_.hAcc;
 
 
 		  	// head_motion = (90 - head_motion);
@@ -307,6 +308,7 @@ void GPS::Publish() {
 		msg.head_motion = head_motion_;
 		// msg.head_vehicle = head_vehicle_;
 		msg.fix_type = fix_type_;
+		msg.acc_2d = acc_2d_;
 
 		if (is_align_) {
 			msg.x_align = cos_s_ * x_ - sin_s_ * y_ + px_;

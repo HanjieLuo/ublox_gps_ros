@@ -182,6 +182,7 @@ private:
 	double head_motion_;   	// radian   Heading of motion 2-D (1e-5), ref to x direction
 	// double head_vehicle_;// deg      Heading of vehicle (2-D)
     int fix_type_;          // -        GNSSfix Type, 0: no fix 1: dead reckoning only 2: 2D-fix 3: 3D-fix 4: GNSS + dead reckoning combined 5: time only fix
+    double acc_2d_;          // m        Horizontal Accuracy Estimate
 
     std::string output_data_file_;
     std::ofstream out_;
